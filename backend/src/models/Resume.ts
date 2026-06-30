@@ -2,12 +2,11 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export interface IResume extends Document {
   user: mongoose.Types.ObjectId;
+  title: string;
   originalName: string;
   fileName: string;
   fileUrl: string;
-  title: string;
   extractedText: string;
-  uploadedAt: Date;
 }
 
 const ResumeSchema = new Schema<IResume>(
@@ -15,6 +14,11 @@ const ResumeSchema = new Schema<IResume>(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+
+    title: {
+      type: String,
       required: true,
     },
 
@@ -29,11 +33,6 @@ const ResumeSchema = new Schema<IResume>(
     },
 
     fileUrl: {
-      type: String,
-      required: true,
-    },
-
-    title: {
       type: String,
       required: true,
     },
