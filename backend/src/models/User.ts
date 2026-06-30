@@ -1,14 +1,13 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  createdAt: Date;
-  updatedAt: Date;
+  refreshToken?: string;
 }
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema(
   {
     name: {
       type: String,
@@ -28,6 +27,11 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
       minlength: 6,
+    },
+
+    refreshToken: {
+      type: String,
+      default: null,
     },
   },
   {

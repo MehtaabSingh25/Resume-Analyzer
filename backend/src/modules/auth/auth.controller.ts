@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { register, login } from "../services/auth.service.js";
-import { AuthRequest } from "../middleware/auth.middleware.js";
-import { getCurrentUser } from "../services/auth.service.js";
+import { register, login } from "./auth.service.js";
+import { AuthRequest } from "../../middleware/auth.middleware.js";
+import { getCurrentUser } from "./auth.service.js";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {

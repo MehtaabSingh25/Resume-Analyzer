@@ -1,9 +1,10 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import authRoutes from "./routes/auth.routes.js";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import authRoutes from "./modules/auth/auth.routes.js";
+import resumeRoutes from "./modules/resume/resume.routes.js";
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/resume", resumeRoutes);
 
 export default app;

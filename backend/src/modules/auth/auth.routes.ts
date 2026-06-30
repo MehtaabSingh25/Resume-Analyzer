@@ -5,13 +5,13 @@ import {
   loginUser,
   currentUser,
   logoutUser,
-} from "../controllers/auth.controller.js";
+} from "./auth.controller.js";
 
-import authMiddleware from "../middleware/auth.middleware.js";
-import validate from "../middleware/validate.js";
-import { authLimiter } from "../middleware/rateLimiter.js";
+import authMiddleware from "../../middleware/auth.middleware.js";
+import validate from "../../middleware/validate.js";
+import { authLimiter } from "../../middleware/rateLimiter.js";
 
-import { loginSchema, registerSchema } from "../validators/auth.validator.js";
+import { loginSchema, registerSchema } from "./auth.validator.js";
 
 const router = Router();
 
