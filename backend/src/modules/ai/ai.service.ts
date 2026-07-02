@@ -2,8 +2,8 @@ import ai from "../../lib/gemini.js";
 import Resume from "../../models/Resume.js";
 import Analysis from "../../models/Analysis.js";
 
-export const analyzeResume = async (resumeId: string) => {
-  const resume = await Resume.findById(resumeId);
+export const analyzeResume = async (resumeId: string, userId: string) => {
+  const resume = await Resume.findOne({ _id: resumeId, user: userId });
 
   if (!resume) {
     throw new Error("Resume not found");
@@ -48,4 +48,17 @@ ${resume.extractedText}
   });
 
   return analysis;
+};
+
+export const getLatestResumeAnalysis = async (
+  resumeId: string,
+  userId: string,
+) => {
+  const resume = await Resume.findOne({ _id: resumeId, user: userId });
+
+  if (!resume) {
+    throw new Error("Resume not found");
+  }
+
+  return Analysis.findOne({ resume: resume._id }).sort({ createdAt: -1 });
 };

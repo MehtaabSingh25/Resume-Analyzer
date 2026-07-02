@@ -4,9 +4,16 @@ import authMiddleware from "../../middleware/auth.middleware.js";
 
 import upload from "../../middleware/upload.middleware.js";
 
-import { uploadResume } from "./resume.controller.js";
+import {
+  deleteResume,
+  getResume,
+  listResumes,
+  uploadResume,
+} from "./resume.controller.js";
 
 const router = Router();
+
+router.get("/", authMiddleware, listResumes);
 
 router.post(
   "/upload",
@@ -17,5 +24,9 @@ router.post(
 
   uploadResume,
 );
+
+router.get("/:resumeId", authMiddleware, getResume);
+
+router.delete("/:resumeId", authMiddleware, deleteResume);
 
 export default router;

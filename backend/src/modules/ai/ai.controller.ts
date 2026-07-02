@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { analyzeResume } from "./ai.service.js";
+import { AuthRequest } from "../../middleware/auth.middleware.js";
+import { analyzeResume, getLatestResumeAnalysis } from "./ai.service.js";
 
 export const analyze = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
     const resumeId = Array.isArray(req.params.resumeId)
       ? req.params.resumeId[0]
       : req.params.resumeId;
-    const result = await analyzeResume(resumeId);
+    const result = await analyzeResume(resumeId, req.user!.id);
 
     res.json({
       success: true,
@@ -17,6 +18,28 @@ export const analyze = async (
     });
   } catch (error: any) {
     res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getAnalysis = async (req: AuthRequest, res: Response) => {
+  try {
+    const resumeId = Array.isArray(req.params.resumeId)
+      ? req.params.resumeId[0]
+      : req.params.resumeId;
+    const result = await getLatestResumeAnalysis(
+      resumeId,
+      req.user!.id,
+    );
+
+    res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(404).json({
       success: false,
       message: error.message,
     });

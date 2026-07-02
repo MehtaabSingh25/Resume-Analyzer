@@ -4,6 +4,7 @@ import { extractPdfText } from "../../lib/pdf.js";
 
 import cloudinary from "../../lib/cloudinary.js";
 import Resume from "../../models/Resume.js";
+import Analysis from "../../models/Analysis.js";
 
 export const uploadResume = async (
   userId: string,
@@ -41,4 +42,73 @@ export const uploadResume = async (
   });
 
   return resume;
+};
+
+export const getUserResumes = async (userId: string) => {
+  const resumes = await Resume.find({ user: userId })
+    .select("-extractedText")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  const resumeIds = resumes.map((resume) => resume._id);
+
+  const analyses = await Analysis.find({ resume: { $in: resumeIds } })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  const latestAnalysisByResume = new Map<string, any>();
+
+  for (const analysis of analyses) {
+    const resumeId = analysis.resume.toString();
+
+    if (!latestAnalysisByResume.has(resumeId)) {
+      latestAnalysisByResume.set(resumeId, analysis);
+    }
+  }
+
+  return resumes.map((resume) => ({
+    ...resume,
+    analysis: latestAnalysisByResume.get(resume._id.toString()) ?? null,
+  }));
+};
+
+export const getUserResumeById = async (userId: string, resumeId: string) => {
+  const resume = await Resume.findOne({ _id: resumeId, user: userId })
+    .select("-extractedText")
+    .lean();
+
+  if (!resume) {
+    throw new Error("Resume not found");
+  }
+
+  const analysis = await Analysis.findOne({ resume: resume._id })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return {
+    ...resume,
+    analysis,
+  };
+};
+
+export const deleteUserResume = async (userId: string, resumeId: string) => {
+  const resume = await Resume.findOne({ _id: resumeId, user: userId });
+
+  if (!resume) {
+    throw new Error("Resume not found");
+  }
+
+  await Analysis.deleteMany({ resume: resume._id });
+
+  try {
+    await cloudinary.uploader.destroy(resume.fileName, {
+      resource_type: "raw",
+    });
+  } catch {
+    // Keep deletion resilient if Cloudinary cleanup fails.
+  }
+
+  await resume.deleteOne();
+
+  return { id: resumeId };
 };
