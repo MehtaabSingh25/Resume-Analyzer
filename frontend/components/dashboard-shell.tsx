@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { navItems } from "@/lib/navigation";
 
@@ -56,15 +56,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           );
         })}
       </nav>
-
-      <button
-        type="button"
-        onClick={logout}
-        className="mt-4 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
-      >
-        <LogOut size={18} />
-        Logout
-      </button>
     </aside>
   );
 

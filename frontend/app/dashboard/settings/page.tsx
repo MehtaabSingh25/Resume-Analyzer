@@ -30,11 +30,6 @@ export default function SettingsPage() {
           description="Sign out and return to login."
           action={<button onClick={logout} className="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-zinc-950">Logout</button>}
         />
-        <SettingRow
-          title="Delete Account"
-          description="Permanent account deletion option."
-          action={<button className="rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-600 dark:border-red-900">Delete</button>}
-        />
       </div>
     </>
   );
