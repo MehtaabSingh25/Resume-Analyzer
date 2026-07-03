@@ -26,11 +26,6 @@ export default function SettingsPage() {
           action={<input type="checkbox" defaultChecked className="h-5 w-5" />}
         />
         <SettingRow
-          title="Password"
-          description="Open the reset password flow."
-          action={<button className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium dark:border-zinc-800">Change</button>}
-        />
-        <SettingRow
           title="Logout"
           description="Sign out and return to login."
           action={<button onClick={logout} className="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-zinc-950">Logout</button>}
