@@ -13,7 +13,7 @@ app.use(
     cors({
         origin: [
             "http://localhost:3000",
-            "https://resume-analyzer-veron.vercel.app/"
+            "https://resume-analyzer-topaz-seven.vercel.app"
         ],
         credentials: true
     })
